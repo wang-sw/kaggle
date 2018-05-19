@@ -9,7 +9,7 @@ Github: https://github.com/apachecn/kaggle
 PCA主成成分分析
 '''
 
-import os.path
+import os
 import csv
 import time
 import numpy as np
@@ -20,8 +20,11 @@ from sklearn.svm import SVC
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 
-# 数据路径
-data_dir = '/Users/wuyanxue/Documents/GitHub/datasets/getting-started/digit-recognizer/'
+#数据路径 根据操作系统自动选择路径
+if os.name=='nt':
+    data_dir = 'G:/data/kaggle/datasets/getting-started/digit-recognizer/'
+else:
+    data_dir = '/media/wsw/B634091A3408DF6D/data/kaggle/datasets/getting-started/digit-recognizer/'
 
 # 加载数据
 def opencsv():
@@ -45,9 +48,9 @@ def dRCsv(x_train, x_test, preData, COMPONENT_NUM):
     '''
     使用说明：https://www.cnblogs.com/pinard/p/6243025.html
     n_components>=1
-      n_components=NUM   设置占特征数量比
+      n_components=NUM   设置降维到的维度数目
     0 < n_components < 1
-      n_components=0.99  设置阈值总方差占比
+      n_components=0.99  设置阈值(总方差占比)决定降维到的维度数目
     '''
     pca = PCA(n_components=COMPONENT_NUM, whiten=True)
     pca.fit(trainData)  # Fit the model with X
@@ -203,6 +206,7 @@ def trainDRSVM():
 def preDRSVM():
     startTime = time.time()
     # 加载模型和数据
+
     optimalSVMClf = getModel(os.path.join(data_dir, 'output/Result_sklearn_SVM.model'))
     pcaPreData = getModel(os.path.join(data_dir, 'output/Result_sklearn_SVM.pcaPreData'))
 
@@ -211,6 +215,7 @@ def preDRSVM():
     # print("testLabel = %f" % testscore)
     # 结果的输出
     saveResult(testLabel, os.path.join(data_dir, 'output/Result_sklearn_SVM.csv'))
+
     print("finish!")
     stopTime = time.time()
     print('PreModel load time used:%f s' % (stopTime - startTime))

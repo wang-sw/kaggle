@@ -7,16 +7,20 @@ Author: 片刻/ccyf00
 Github: https://github.com/apachecn/kaggle
 '''
 
-import os.path
+import os
 import csv
 import time
 import numpy as np
 import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.neighbors import KNeighborsClassifier
-import sys
 
-data_dir = '/Users/wuyanxue/Documents/GitHub/datasets/getting-started/digit-recognizer/'
+
+#数据路径 根据操作系统自动选择路径
+if os.name=='nt':
+    data_dir = 'G:/data/kaggle/datasets/getting-started/digit-recognizer/'
+else:
+    data_dir = '/media/wsw/B634091A3408DF6D/data/kaggle/datasets/getting-started/digit-recognizer/'
 
 # 加载数据
 def opencsv():
@@ -59,9 +63,9 @@ def dRPCA(x_train, x_test, COMPONENT_NUM):
     '''
     使用说明：https://www.cnblogs.com/pinard/p/6243025.html
     n_components>=1
-      n_components=NUM   设置占特征数量比
+      n_components=NUM   设置降维到的维度数目
     0 < n_components < 1
-      n_components=0.99  设置阈值总方差占比
+      n_components=0.99  设置阈值(总方差占比)决定降维到的维度数目
     '''
     pca = PCA(n_components=COMPONENT_NUM, whiten=True)
     pca.fit(trainData)  # Fit the model with X
@@ -85,7 +89,7 @@ def dRecognition_knn():
     # print("testData==>", type(testData), shape(testData))
     print("load data finish")
     stop_time_l = time.time()
-    print('load data time used:%f' % (stop_time_l - start_time))
+    print('load data time used:%f s' % (stop_time_l - start_time))
 
     # 降维处理
     trainData, testData = dRPCA(trainData, testData, 35)
@@ -100,7 +104,7 @@ def dRecognition_knn():
     saveResult(testLabel, os.path.join(data_dir, 'output/Result_sklearn_knn.csv'))
     print("finish!")
     stop_time_r = time.time()
-    print('classify time used:%f' % (stop_time_r - start_time))
+    print('classify time used:%f s' % (stop_time_r - start_time))
 
 
 if __name__ == '__main__':
