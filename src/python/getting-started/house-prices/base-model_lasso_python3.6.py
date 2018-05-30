@@ -11,21 +11,27 @@ import pandas as pd
 from sklearn.linear_model import Ridge
 import os.path
 
-data_dir = '/opt/data/kaggle/getting-started/house-prices'
+
+#数据路径
+import os
+if os.name=='nt':
+    data_dir = 'G:/data/kaggle/datasets/getting-started/house-prices/'
+else:
+    data_dir = '/media/wsw/B634091A3408DF6D/data/kaggle/datasets/getting-started/house-prices/'
 
 
 # 加载数据
 def opencsv():
     # 使用 pandas 打开
-    df_train = pd.read_csv(os.path.join(data_dir, 'train.csv'))
-    df_test = pd.read_csv(os.path.join(data_dir, 'test.csv'))
+    df_train = pd.read_csv(os.path.join(data_dir, 'input/train.csv'))
+    df_test = pd.read_csv(os.path.join(data_dir, 'input/test.csv'))
 
     return df_train, df_test
 
 
-def saveResult(result):
+def saveResult(result,filename):
     result.to_csv(
-        os.path.join(data_dir, "submission.csv"), sep=',', encoding='utf-8')
+        os.path.join(data_dir, filename), sep=',', encoding='utf-8')
 
 
 def ridgeRegression(trainData, trainLabel, df_test):
@@ -65,7 +71,7 @@ def Regression_ridge():
     result = ridgeRegression(train_data, trainLabel, df_test)
 
     # 结果的输出
-    saveResult(result)
+    saveResult(result,"output/result_lasso")
     print("finish!")
     stop_time_r = time.time()
     print('classify time used:%f' % (stop_time_r - start_time))

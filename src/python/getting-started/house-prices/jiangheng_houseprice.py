@@ -15,7 +15,13 @@ import os.path
 
 warnings.filterwarnings('ignore')
 
-data_dir = '/opt/data/kaggle/getting-started/house-prices'
+#数据路径
+import os
+if os.name=='nt':
+    data_dir = 'G:/data/kaggle/datasets/getting-started/house-prices/'
+else:
+    data_dir = '/media/wsw/B634091A3408DF6D/data/kaggle/datasets/getting-started/house-prices/'
+
 
 # 这里对数据做一些转换,原因要么是某些类别个数太少而且分布相近,要么是特征内的值之间有较为明显的优先级
 mapper = {
@@ -145,8 +151,8 @@ def processing(data):
         data.loc[:, col] = data[col].map(mapp)
 
 
-df_train = pd.read_csv(os.path.join(data_dir, "train.csv"))
-df_test = pd.read_csv(os.path.join(data_dir, "test.csv"))
+df_train = pd.read_csv(os.path.join(data_dir, "input/train.csv"))
+df_test = pd.read_csv(os.path.join(data_dir, "input/test.csv"))
 test_ID = df_test['Id']
 
 # 去除离群点
@@ -175,4 +181,4 @@ ridge.fit(dummy.iloc[:prices.shape[0], :], prices)
 result = np.expm1(ridge.predict(dummy.iloc[prices.shape[0]:, :]))
 pre = DataFrame(result, columns=['SalePrice'])
 prediction = pd.concat([test_ID, pre], axis=1)
-prediction.to_csv(os.path.join(data_dir, "submission_1.csv"), index=False)
+prediction.to_csv(os.path.join(data_dir, "output/result_jh.csv"), index=False)
