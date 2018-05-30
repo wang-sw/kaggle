@@ -3,68 +3,15 @@
 '''
 Created on 2018-05-14
 Update  on 2018-05-14
-Author: 平淡的天
+Author: 平淡的天/wang-sw
 Github: https://github.com/apachecn/kaggle
 '''
-#
-# from sklearn.neural_network import MLPClassifier
-# from sklearn.model_selection import train_test_split
-# from sklearn.decomposition import PCA
-# import pandas as pd
-#
-# train_data = pd.read_csv(r"C:\Users\312\Desktop\digit-recognizer\train.csv")
-# test_data = pd.read_csv(r"C:\Users\312\Desktop\digit-recognizer\test.csv")
-# data = pd.concat([train_data, test_data], axis=0).reset_index(drop=True)
-# data.drop(['label'], axis=1, inplace=True)
-# label = train_data.label
-#
-# pca = PCA(n_components=100, random_state=34)
-# data_pca = pca.fit_transform(data)
-#
-# Xtrain, Ytrain, xtest, ytest = train_test_split(
-#     data_pca[0:len(train_data)], label, test_size=0.1, random_state=34)
-#
-# clf = MLPClassifier(
-#     hidden_layer_sizes=(100, ),
-#     activation='relu',
-#     alpha=0.0001,
-#     learning_rate='constant',
-#     learning_rate_init=0.001,
-#     max_iter=200,
-#     shuffle=True,
-#     random_state=34)
-#
-# clf.fit(Xtrain, xtest)
-# y_predict = clf.predict(Ytrain)
-#
-# zeroLable = ytest - y_predict
-# rightCount = 0
-# for i in range(len(zeroLable)):
-#     if list(zeroLable)[i] == 0:
-#         rightCount += 1
-# print('the right rate is:', float(rightCount) / len(zeroLable))
-#
-# result = clf.predict(data_pca[len(train_data):])
-#
-# i = 0
-# fw = open("C:\\Users\\312\\Desktop\\digit-recognizer\\result.csv", 'w')
-# with open('C:\\Users\\312\\Desktop\\digit-recognizer\\sample_submission.csv'
-#           ) as pred_file:
-#     fw.write('{},{}\n'.format('ImageId', 'Label'))
-#     for line in pred_file.readlines()[1:]:
-#         splits = line.strip().split(',')
-#         fw.write('{},{}\n'.format(splits[0], result[i]))
-#         i += 1
 
-import os.path
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.decomposition import PCA
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import GridSearchCV
-from numpy import arange
-# from lightgbm import LGBMClassifier
 from sklearn.metrics import classification_report
 from sklearn import metrics
 import os.path
@@ -113,13 +60,7 @@ def dRPCA(data, COMPONENT_NUM=100):
 # 训练模型
 def trainModel(X_train, y_train):
     print('Train model...')
-    # clf = RandomForestClassifier(
-    #     n_estimators=140,
-    #     max_depth=20,
-    #     min_samples_split=2,
-    #     min_samples_leaf=1,
-    #     random_state=34)
-    from sklearn.neural_network import MLPClassifier
+
     clf = MLPClassifier(
         hidden_layer_sizes=(100, ),
         activation='relu',
@@ -130,15 +71,8 @@ def trainModel(X_train, y_train):
         shuffle=True,
         random_state=34)
 
-    clf.fit(X_train, y_train)  # 训练rf
+    clf.fit(X_train, y_train)  # 训练
 
-    # clf=LGBMClassifier(num_leaves=63, max_depth=7, n_estimators=80, n_jobs=20)
-
-    # param_test1 = {'n_estimators':arange(10,150,10),'max_depth':arange(1,21,1)}
-    # gsearch1 = GridSearchCV(estimator = clf, param_grid = param_test1, scoring='accuracy',iid=False,cv=5)
-    # gsearch1.fit(X_train, y_train)
-    # print(gsearch1.grid_scores_, gsearch1.best_params_, gsearch1.best_score_)
-    # clf=gsearch1.best_estimator_
 
     # 使用AdaBoost
     # clf = AdaBoostClassifier(clf, algorithm="SAMME", n_estimators=10, learning_rate=0.8)
