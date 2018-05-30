@@ -17,13 +17,20 @@ from keras.models import Sequential
 from keras.optimizers import RMSprop
 from keras.preprocessing.image import ImageDataGenerator
 from keras.utils.np_utils import to_categorical  # convert to one-hot-encoding
+import os
 
 np.random.seed(2)
 
+#数据路径
+import os
+if os.name=='nt':
+    data_dir = 'G:/data/kaggle/datasets/getting-started/digit-recognizer/'
+else:
+    data_dir = '/media/wsw/B634091A3408DF6D/data/kaggle/datasets/getting-started/digit-recognizer/'
+
 # Load the data
-train = pd.read_csv(
-    r'datasets/getting-started/digit-recognizer/input/train.csv')
-test = pd.read_csv(r'datasets/getting-started/digit-recognizer/input/test.csv')
+train = pd.read_csv(os.path.join(data_dir, 'input/train.csv'))
+test = pd.read_csv(os.path.join(data_dir, 'input/test.csv'))
 
 X_train = train.values[:, 1:]
 Y_train = train.values[:, 0]
@@ -129,6 +136,5 @@ submission = pd.concat(
     [pd.Series(
         range(1, 28001), name="ImageId"), results], axis=1)
 
-submission.to_csv(
-    "datasets/getting-started/digit-recognizer/ouput/Result_keras_CNN.csv",
-    index=False)
+submission.to_csv(os.path.join(data_dir, "output/Result_keras_CNN.csv",index=False))
+print('finished')

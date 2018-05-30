@@ -16,11 +16,14 @@ from sklearn.decomposition import PCA
 from sklearn.neighbors import KNeighborsClassifier
 
 
-#数据路径 根据操作系统自动选择路径
+
+#数据路径
+import os
 if os.name=='nt':
     data_dir = 'G:/data/kaggle/datasets/getting-started/digit-recognizer/'
 else:
     data_dir = '/media/wsw/B634091A3408DF6D/data/kaggle/datasets/getting-started/digit-recognizer/'
+
 
 # 加载数据
 def opencsv():
@@ -35,18 +38,15 @@ def opencsv():
 
 
 def saveResult(result, csvName):
-    with open(csvName, 'w', newline='') as myFile:  # 创建记录输出结果的文件（w 和 wb 使用的时候有问题）
+    with open(csvName, 'w') as myFile:  # 创建记录输出结果的文件（w 和 wb 使用的时候有问题）
         # python3里面对 str和bytes类型做了严格的区分，不像python2里面某些函数里可以混用。所以用python3来写wirterow时，打开文件不要用wb模式，只需要使用w模式，然后带上newline=''
-        myWriter = csv.writer(myFile)  # 对文件执行写入
-        myWriter.writerow(["ImageId", "Label"])  # 设置表格的列名
+        myWriter = csv.writer(myFile)
+        myWriter.writerow(["ImageId", "Label"])
         index = 0
-        for i in result:
-            tmp = []
-            index = index + 1
-            tmp.append(index)
-            # tmp.append(i)
-            tmp.append(int(i))  # 测试集的标签值
-            myWriter.writerow(tmp)
+        for r in result:
+            index += 1
+            myWriter.writerow([index, int(r)])
+    print('Saved successfully...')  # 保存预测结果
 
 
 def knnClassify(trainData, trainLabel):
@@ -67,7 +67,7 @@ def dRPCA(x_train, x_test, COMPONENT_NUM):
     0 < n_components < 1
       n_components=0.99  设置阈值(总方差占比)决定降维到的维度数目
     '''
-    pca = PCA(n_components=COMPONENT_NUM, whiten=True)
+    pca = PCA(n_components=COMPONENT_NUM, whiten=False)
     pca.fit(trainData)  # Fit the model with X
     pcaTrainData = pca.transform(trainData)  # Fit the model with X and 在X上完成降维.
     pcaTestData = pca.transform(testData)  # Fit the model with X and 在X上完成降维.
@@ -92,14 +92,14 @@ def dRecognition_knn():
     print('load data time used:%f s' % (stop_time_l - start_time))
 
     # 降维处理
-    trainData, testData = dRPCA(trainData, testData, 35)
+    trainData, testData = dRPCA(trainData, testData, 0.8)
 
     # 模型训练
     knnClf = knnClassify(trainData, trainLabel)
 
     # 结果预测
     testLabel = knnClf.predict(testData)
-    
+
     # 结果的输出
     saveResult(testLabel, os.path.join(data_dir, 'output/Result_sklearn_knn.csv'))
     print("finish!")

@@ -17,7 +17,8 @@ import numpy as np
 # from lightgbm import LGBMClassifier
 import time
 
-#数据路径 根据操作系统自动选择路径
+#数据路径
+import os
 if os.name=='nt':
     data_dir = 'G:/data/kaggle/datasets/getting-started/digit-recognizer/'
 else:
