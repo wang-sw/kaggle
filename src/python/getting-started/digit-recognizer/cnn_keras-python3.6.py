@@ -93,7 +93,7 @@ optimizer = RMSprop(lr=0.001, rho=0.9, epsilon=1e-08, decay=0.0)
 model.compile(
     optimizer=optimizer, loss="categorical_crossentropy", metrics=["accuracy"])
 
-epochs = 30
+epochs = 2#30
 batch_size = 86
 
 # Set a learning rate annealer
@@ -136,5 +136,5 @@ submission = pd.concat(
     [pd.Series(
         range(1, 28001), name="ImageId"), results], axis=1)
 
-submission.to_csv(os.path.join(data_dir, "output/Result_keras_CNN.csv",index=False))
+submission.to_csv(os.path.join(data_dir, "output/Result_keras_CNN_2.csv"),index=False)
 print('finished')

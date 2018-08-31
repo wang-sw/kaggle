@@ -40,8 +40,8 @@ from subprocess import check_output
 # check the files available in the directory
 # print(check_output(["ls", "/Users/liudong/Desktop/house_price/train.csv"]).decode("utf8"))
 # 加载数据
-train = pd.read_csv('/opt/data/kaggle/getting-started/house-prices/train.csv')
-test = pd.read_csv('/opt/data/kaggle/getting-started/house-prices/test.csv')
+train = pd.read_csv('../../../../../datasets/getting-started/house-prices/input/train.csv')
+test = pd.read_csv('../../../../../datasets/getting-started/house-prices/input/test.csv')
 # 查看训练数据的特征
 print(train.head(5))
 # 查看测试数据的特征
@@ -377,5 +377,5 @@ result = pd.DataFrame()
 result['Id'] = test_ID
 result['SalePrice'] = ensemble
 # index=False 是用来除去行编号
-result.to_csv('/Users/liudong/Desktop/house_price/result.csv', index=False)
+result.to_csv('../../../../../datasets/getting-started/house-prices/output/result_335.csv', index=False)
 print('##########结束训练##########')
